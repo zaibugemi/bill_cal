@@ -185,6 +185,7 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
                 child: Text(value),
               );
             }).toList(),
+            dropdownColor: Theme.of(context).colorScheme.secondaryContainer,
           ),
           const SizedBox(
             height: 10,
