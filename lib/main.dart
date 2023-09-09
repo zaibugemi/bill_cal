@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
               Expanded(
                   child: Container(
-                padding: const EdgeInsets.only(right: 10.0),
+                margin: const EdgeInsets.only(right: 10.0, bottom: 10.0),
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
               ))
