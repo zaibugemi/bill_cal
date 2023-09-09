@@ -115,8 +115,8 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
         rates: <Rate>[Rate(startUnits: 0, endUnits: 99999, rate: 7.0)]),
   });
 
-  final lastReadingController = TextEditingController(text: '0');
-  final newReadingController = TextEditingController(text: '0');
+  final lastReadingController = TextEditingController();
+  final newReadingController = TextEditingController();
   final categoryController = TextEditingController(text: 'Domestic');
 
   double billAmount = 0;
