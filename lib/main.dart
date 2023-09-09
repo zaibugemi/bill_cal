@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -156,11 +157,17 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
           TextField(
             controller: lastReadingController,
             keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: const InputDecoration(labelText: 'Last Reading'),
           ),
           TextField(
             controller: newReadingController,
             keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: const InputDecoration(labelText: 'New Reading'),
           ),
           DropdownButton<String>(
