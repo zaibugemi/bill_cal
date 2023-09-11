@@ -273,31 +273,31 @@ class SettingsPage extends StatelessWidget {
           height: 10,
           color: Colors.white,
         ),
-        // Fixed element at the bottom
-        Container(
-          color: Colors.blue, // Background color for the fixed element
-          padding: const EdgeInsets.all(16.0), // Adjust padding as needed
-          child: Row(
-            children: <Widget>[
-              const Text(
-                'Fixed Bottom Element',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                ),
-              ),
-              const Spacer(), // Add space to push content to the right
-              ElevatedButton(
-                onPressed: () {
-                  // Handle button press
-                },
-                child: const Text('Button'),
-              ),
-            ],
-          ),
-        ),
+        ElevatedButton(
+            onPressed: () {
+              // Handle button press
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CategoryScreen()));
+            },
+            child: const Text('Add Category'))
       ],
     );
+  }
+}
+
+class CategoryScreen extends StatelessWidget {
+  const CategoryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Category'),
+        ),
+        body: const Padding(
+            padding: EdgeInsets.all(16), child: Text('Add Category')));
   }
 }
 
