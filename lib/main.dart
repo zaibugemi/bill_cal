@@ -279,7 +279,7 @@ class SettingsPage extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CategoryScreen()));
+                      builder: (context) => const AddCategoryForm()));
             },
             child: const Text('Add Category'))
       ],
@@ -287,17 +287,38 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+class AddCategoryForm extends StatefulWidget {
+  const AddCategoryForm({super.key});
+
+  @override
+  AddCategoryFormState createState() {
+    return AddCategoryFormState();
+  }
+}
+
+class AddCategoryFormState extends State<AddCategoryForm> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Category'),
-        ),
-        body: const Padding(
-            padding: EdgeInsets.all(16), child: Text('Add Category')));
+      appBar: AppBar(title: const Text('Add New Category')),
+      body: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+              )
+            ],
+          )),
+    );
   }
 }
 
