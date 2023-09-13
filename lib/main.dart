@@ -283,19 +283,21 @@ class AddCategoryForm extends StatefulWidget {
 
 class AddCategoryFormState extends State<AddCategoryForm> {
   final _formKey = GlobalKey<FormState>();
+  final rateCategories = <Rate>[];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Category')),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(18.0),
         child: Form(
             key: _formKey,
             child: Column(
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Category Name'),
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Category Name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a valid name';
@@ -303,14 +305,89 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                     return null;
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Category Added!')));
-                    }
-                  },
-                  child: const Text('Add Category'),
+                Row(children: [
+                  Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration:
+                          const InputDecoration(labelText: 'units start'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Invalid number';
+                        }
+
+                        int? parsedValue = int.tryParse(value);
+                        if (parsedValue == null) {
+                          return 'Invalid number';
+                        }
+
+                        if (parsedValue < 1) {
+                          return 'Invalid number';
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'units end'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Invalid number';
+                        }
+                        int? parsedValue = int.tryParse(value);
+                        if (parsedValue == null) {
+                          return 'Invalid number';
+                        }
+
+                        if (parsedValue < 1) {
+                          return 'Invalid number';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                      child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(labelText: 'rate'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Invalid number';
+                      }
+
+                      double? parsedValue = double.tryParse(value);
+                      if (parsedValue == null) {
+                        return 'Invalid number';
+                      }
+
+                      if (parsedValue < 0) {
+                        return 'Invalid number';
+                      }
+
+                      return null;
+                    },
+                  ))
+                ]),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Category Added!')));
+                      }
+                    },
+                    child: const Text('Add Category'),
+                  ),
                 )
               ],
             )),
