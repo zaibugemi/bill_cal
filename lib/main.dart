@@ -285,6 +285,10 @@ class AddCategoryFormState extends State<AddCategoryForm> {
   final _formKey = GlobalKey<FormState>();
   final rateCategories = <Rate>[];
 
+  final startUnitController = TextEditingController();
+  final endUnitController = TextEditingController();
+  final rateController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,6 +312,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                 Row(children: [
                   Expanded(
                     child: TextFormField(
+                      controller: startUnitController,
                       keyboardType: TextInputType.number,
                       decoration:
                           const InputDecoration(labelText: 'units start'),
@@ -330,10 +335,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                     ),
                   ),
                   const SizedBox(
-                    width: 10.0,
+                    width: 20.0,
                   ),
                   Expanded(
                     child: TextFormField(
+                      controller: endUnitController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(labelText: 'units end'),
                       validator: (value) {
@@ -353,10 +359,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                     ),
                   ),
                   const SizedBox(
-                    width: 10.0,
+                    width: 20.0,
                   ),
                   Expanded(
                       child: TextFormField(
+                    controller: rateController,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(labelText: 'rate'),
                     validator: (value) {
