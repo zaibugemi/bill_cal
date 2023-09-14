@@ -309,86 +309,105 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                     return null;
                   },
                 ),
-                Row(children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: startUnitController,
-                      keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'units start'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Invalid number';
-                        }
-
-                        int? parsedValue = int.tryParse(value);
-                        if (parsedValue == null) {
-                          return 'Invalid number';
-                        }
-
-                        if (parsedValue < 1) {
-                          return 'Invalid number';
-                        }
-
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  Expanded(
-                    child: TextFormField(
-                      controller: endUnitController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'units end'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Invalid number';
-                        }
-                        int? parsedValue = int.tryParse(value);
-                        if (parsedValue == null) {
-                          return 'Invalid number';
-                        }
-
-                        if (parsedValue < 1) {
-                          return 'Invalid number';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  Expanded(
+                Container(
+                  margin: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, bottom: 10.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.secondary,
+                          width: 2),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0))),
+                  child: Row(children: [
+                    Expanded(
                       child: TextFormField(
-                    controller: rateController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'rate'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Invalid number';
-                      }
+                        controller: startUnitController,
+                        keyboardType: TextInputType.number,
+                        decoration:
+                            const InputDecoration(labelText: 'units start'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Invalid number';
+                          }
 
-                      double? parsedValue = double.tryParse(value);
-                      if (parsedValue == null) {
-                        return 'Invalid number';
-                      }
+                          int? parsedValue = int.tryParse(value);
+                          if (parsedValue == null) {
+                            return 'Invalid number';
+                          }
 
-                      if (parsedValue < 0) {
-                        return 'Invalid number';
-                      }
+                          if (parsedValue < 1) {
+                            return 'Invalid number';
+                          }
 
-                      return null;
-                    },
-                  ))
-                ]),
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        controller: endUnitController,
+                        keyboardType: TextInputType.number,
+                        decoration:
+                            const InputDecoration(labelText: 'units end'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Invalid number';
+                          }
+                          int? parsedValue = int.tryParse(value);
+                          if (parsedValue == null) {
+                            return 'Invalid number';
+                          }
+
+                          if (parsedValue < 1) {
+                            return 'Invalid number';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Expanded(
+                        child: TextFormField(
+                      controller: rateController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'rate'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Invalid number';
+                        }
+
+                        double? parsedValue = double.tryParse(value);
+                        if (parsedValue == null) {
+                          return 'Invalid number';
+                        }
+
+                        if (parsedValue < 0) {
+                          return 'Invalid number';
+                        }
+
+                        return null;
+                      },
+                    ))
+                  ]),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          rateCategories.add(Rate(
+                              startUnits: int.parse(startUnitController.text),
+                              endUnits: int.parse(endUnitController.text),
+                              rate: double.parse(rateController.text)));
+                        });
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Category Added!')));
                       }
