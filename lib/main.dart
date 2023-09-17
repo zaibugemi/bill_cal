@@ -284,6 +284,7 @@ class AddCategoryForm extends StatefulWidget {
 class AddCategoryFormState extends State<AddCategoryForm> {
   final _formKey = GlobalKey<FormState>();
   final rateCategories = <Rate>[];
+  bool _isFlatRate = false;
 
   final startUnitController = TextEditingController();
   final endUnitController = TextEditingController();
@@ -390,6 +391,18 @@ class AddCategoryFormState extends State<AddCategoryForm> {
 
                         if (parsedValue < 0) {
                           return 'Invalid number';
+              Container(
+                margin: const EdgeInsets.only(top: 8.0),
+                child: SwitchListTile(
+                    contentPadding: const EdgeInsets.only(left: 8.0, right: 0),
+                    title: const Text('Flat rate'),
+                    value: _isFlatRate,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isFlatRate = value;
+
+                        if (value == true && rateDivisions.length > 1) {
+                          rateDivisions = [rateDivisions[0]];
                         }
 
                         return null;
@@ -402,6 +415,9 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                      });
+                    }),
+              ),
                         setState(() {
                           rateCategories.add(Rate(
                               startUnits: int.parse(startUnitController.text),
