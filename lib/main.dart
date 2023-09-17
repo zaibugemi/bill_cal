@@ -96,6 +96,10 @@ class CategoriesState extends ChangeNotifier {
         isFlatRate: true,
         rates: <Rate>[Rate(startUnits: 0, endUnits: 99999, rate: 7.0)]),
   });
+
+  bool keyExists(categoryName) {
+    return electricitySettings.categories.containsKey(categoryName);
+  }
 }
 
 class ElectricityBillCalculator extends StatefulWidget {
@@ -309,6 +313,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
 
   @override
   Widget build(BuildContext context) {
+    var categoriesState = context.watch<CategoriesState>();
     return Scaffold(
       appBar: AppBar(title: const Text('Add New Category')),
       body: Padding(
@@ -505,11 +510,18 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: ElevatedButton(
                   onPressed: () {
+                    var categoryNameInput =
+                        _categoryNameKey.currentState!.value;
                     if (_categoryNameKey.currentState!.validate()) {
                       if (rateDivisions.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text('Please add a rate!')));
+                      } else if (categoriesState.keyExists(categoryNameInput)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('Category name already exists!')));
                       } else {
                         setState(() {
                           rateDivisions.add(Rate(
