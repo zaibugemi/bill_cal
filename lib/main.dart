@@ -97,6 +97,11 @@ class CategoriesState extends ChangeNotifier {
         rates: <Rate>[Rate(startUnits: 0, endUnits: 99999, rate: 7.0)]),
   });
 
+  void addCategory(category, categoryName) {
+    electricitySettings.categories[categoryName] = category;
+    notifyListeners();
+  }
+
   bool keyExists(categoryName) {
     return electricitySettings.categories.containsKey(categoryName);
   }
@@ -523,12 +528,12 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                 content:
                                     Text('Category name already exists!')));
                       } else {
-                        setState(() {
-                          rateDivisions.add(Rate(
-                              startUnits: int.parse(startUnitController.text),
-                              endUnits: int.parse(endUnitController.text),
-                              rate: double.parse(rateController.text)));
-                        });
+                        final categoryToAdd = Category(
+                            name: categoryNameInput,
+                            isFlatRate: _isFlatRate,
+                            rates: rateDivisions);
+                        categoriesState.addCategory(
+                            categoryToAdd, categoryNameInput);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Category Added!')));
