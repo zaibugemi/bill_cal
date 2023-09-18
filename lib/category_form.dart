@@ -152,9 +152,8 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                         ));
                                         return 'Invalid number';
                                       }
-                                    } else {
-                                      return null;
                                     }
+                                    return null;
                                   },
                                 ),
                               ),
@@ -188,8 +187,8 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Align(
-                                alignment: Alignment.centerRight,
-                                child: IconButton(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton.icon(
                                     onPressed: () {
                                       if (_rateFormKey.currentState!
                                           .validate()) {
@@ -210,8 +209,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                         startUnitFocusNode.requestFocus();
                                       }
                                     },
-                                    icon: const Icon(Icons.add)),
-                              ),
+                                    icon: const Icon(
+                                      Icons.add,
+                                    ),
+                                    label: const Text('Add Rate'),
+                                  )),
                             )
                           ],
                         ),
