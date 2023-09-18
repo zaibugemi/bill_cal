@@ -138,7 +138,23 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                     if (parsedValue < 0) {
                                       return 'Invalid number';
                                     }
-                                    return null;
+
+                                    int? startUnitParsed =
+                                        int.tryParse(startUnitController.text);
+
+                                    if (startUnitParsed != null) {
+                                      if (startUnitParsed >= parsedValue) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          duration: Duration(seconds: 6),
+                                          content: Text(
+                                              "'units end' should be greater than 'units start'"),
+                                        ));
+                                        return 'Invalid number';
+                                      }
+                                    } else {
+                                      return null;
+                                    }
                                   },
                                 ),
                               ),
