@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'categories_state.dart';
 import 'classes/categories_rate.dart';
 
+const maxUnitsForFlatRate = 99999;
+
 class AddCategoryForm extends StatefulWidget {
   const AddCategoryForm({super.key});
 
@@ -70,8 +72,19 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                       setState(() {
                         _isFlatRate = value;
 
-                        if (value == true && rateDivisions.length > 1) {
-                          rateDivisions = [rateDivisions[0]];
+                        if (value == true) {
+                          // set the units range for flat rate
+                          startUnitController.text = '1';
+                          endUnitController.text = '$maxUnitsForFlatRate';
+                          if (rateDivisions.length > 1) {
+                            rateDivisions[0].startUnits = 1;
+                            rateDivisions[0].endUnits = maxUnitsForFlatRate;
+                            rateDivisions = [rateDivisions[0]];
+                          }
+                        } else {
+                          // reset the unit range
+                          startUnitController.text = '';
+                          endUnitController.text = '';
                         }
                       });
                     }),
@@ -92,74 +105,78 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                         child: Column(
                           children: [
                             Row(children: [
-                              Expanded(
-                                child: TextFormField(
-                                  focusNode: startUnitFocusNode,
-                                  controller: startUnitController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                      labelText: 'units start'),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Invalid number';
-                                    }
-
-                                    int? parsedValue = int.tryParse(value);
-                                    if (parsedValue == null) {
-                                      return 'Invalid number';
-                                    }
-
-                                    if (parsedValue < 0) {
-                                      return 'Invalid number';
-                                    }
-
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20.0,
-                              ),
-                              Expanded(
-                                child: TextFormField(
-                                  controller: endUnitController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                      labelText: 'units end'),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Invalid number';
-                                    }
-                                    int? parsedValue = int.tryParse(value);
-                                    if (parsedValue == null) {
-                                      return 'Invalid number';
-                                    }
-
-                                    if (parsedValue < 0) {
-                                      return 'Invalid number';
-                                    }
-
-                                    int? startUnitParsed =
-                                        int.tryParse(startUnitController.text);
-
-                                    if (startUnitParsed != null) {
-                                      if (startUnitParsed >= parsedValue) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          duration: Duration(seconds: 6),
-                                          content: Text(
-                                              "'units end' should be greater than 'units start'"),
-                                        ));
+                              if (!_isFlatRate)
+                                Expanded(
+                                  child: TextFormField(
+                                    focusNode: startUnitFocusNode,
+                                    controller: startUnitController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                        labelText: 'units start'),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
                                         return 'Invalid number';
                                       }
-                                    }
-                                    return null;
-                                  },
+
+                                      int? parsedValue = int.tryParse(value);
+                                      if (parsedValue == null) {
+                                        return 'Invalid number';
+                                      }
+
+                                      if (parsedValue < 0) {
+                                        return 'Invalid number';
+                                      }
+
+                                      return null;
+                                    },
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 20.0,
-                              ),
+                              if (!_isFlatRate)
+                                const SizedBox(
+                                  width: 20.0,
+                                ),
+                              if (!_isFlatRate)
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: endUnitController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                        labelText: 'units end'),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Invalid number';
+                                      }
+                                      int? parsedValue = int.tryParse(value);
+                                      if (parsedValue == null) {
+                                        return 'Invalid number';
+                                      }
+
+                                      if (parsedValue < 0) {
+                                        return 'Invalid number';
+                                      }
+
+                                      int? startUnitParsed = int.tryParse(
+                                          startUnitController.text);
+
+                                      if (startUnitParsed != null) {
+                                        if (startUnitParsed >= parsedValue) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            duration: Duration(seconds: 6),
+                                            content: Text(
+                                                "'units end' should be greater than 'units start'"),
+                                          ));
+                                          return 'Invalid number';
+                                        }
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              if (!_isFlatRate)
+                                const SizedBox(
+                                  width: 20.0,
+                                ),
                               Expanded(
                                   child: TextFormField(
                                 controller: rateController,
