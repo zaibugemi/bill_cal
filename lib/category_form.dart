@@ -82,7 +82,6 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15.0, bottom: 10.0),
                       decoration: BoxDecoration(
-                          // color: Theme.of(context).colorScheme.primaryContainer,
                           border: Border.all(
                               color: Theme.of(context).colorScheme.secondary,
                               width: 2),
@@ -110,7 +109,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                       return 'Invalid number';
                                     }
 
-                                    if (parsedValue < 1) {
+                                    if (parsedValue < 0) {
                                       return 'Invalid number';
                                     }
 
@@ -136,7 +135,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                       return 'Invalid number';
                                     }
 
-                                    if (parsedValue < 1) {
+                                    if (parsedValue < 0) {
                                       return 'Invalid number';
                                     }
                                     return null;
