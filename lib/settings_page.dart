@@ -14,6 +14,16 @@ class SettingsPage extends StatelessWidget {
 
     return Column(
       children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(top: 9.0, bottom: 9.0),
+          child: const Text(
+            "Categories",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
         Expanded(
           child: ListView.builder(
             itemCount: electricityCategories
