@@ -291,7 +291,12 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                             rates: rateDivisions);
                         categoriesState.addCategory(
                             categoryToAdd, categoryNameInput);
-                        Navigator.pop(context);
+                        if (categoriesState
+                                    .electricitySettings.categories.length -
+                                1 >
+                            0) {
+                          Navigator.pop(context);
+                        }
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Category Added!')));
                       }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'categories_state.dart';
+import 'category_form.dart';
 import 'electricity_bill_calculator.dart';
 import 'settings_page.dart';
 
@@ -41,6 +42,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var categoriesState = context.watch<CategoriesState>();
+
+    if (categoriesState.electricitySettings.categories.isEmpty) {
+      return const AddCategoryForm();
+    }
+
     Widget page;
     switch (selectedIndex) {
       case 0:

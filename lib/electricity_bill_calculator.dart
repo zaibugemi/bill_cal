@@ -18,12 +18,15 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
 
   final lastReadingController = TextEditingController();
   final newReadingController = TextEditingController();
-  final categoryController = TextEditingController(text: 'Domestic');
+  final categoryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var categoriesState = context.watch<CategoriesState>();
     var electricitySettings = categoriesState.electricitySettings;
+    if (categoryController.text.isEmpty) {
+      categoryController.text = electricitySettings.categories.keys.toList()[0];
+    }
 
     double calculateBill() {
       int lastReading = int.tryParse(lastReadingController.text) ?? 0;
