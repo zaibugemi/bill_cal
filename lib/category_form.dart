@@ -1,3 +1,4 @@
+import 'package:bill_cal/database/bill_db.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -271,7 +272,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     var categoryNameInput =
                         _categoryNameKey.currentState!.value;
                     if (_categoryNameKey.currentState!.validate()) {
@@ -289,16 +290,25 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                             name: categoryNameInput,
                             hasFlatRate: _hasFlatRate,
                             rates: rateDivisions);
+
+                        var db = DatabaseHelper();
+                        await db.addCategory(categoryToAdd);
+                        // var categories = await db.getCategories();
+
                         categoriesState.addCategory(
                             categoryToAdd, categoryNameInput);
-                        if (categoriesState
-                                    .electricitySettings.categories.length -
-                                1 >
-                            0) {
-                          Navigator.pop(context);
+
+                        // check that the widget that provided context is still in the widget tree after the async operation
+                        if (context.mounted) {
+                          if (categoriesState
+                                      .electricitySettings.categories.length -
+                                  1 >
+                              0) {
+                            Navigator.pop(context);
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Category Added!')));
                         }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Category Added!')));
                       }
                     }
                   },
