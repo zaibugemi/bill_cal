@@ -35,7 +35,7 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
       Category category = electricitySettings.categories[selectedCategory]!;
       int unitsConsumed = newReading - lastReading;
 
-      if (category.isFlatRate) {
+      if (category.hasFlatRate) {
         return unitsConsumed * category.rates.first.rate;
       } else {
         double totalBill = 0;

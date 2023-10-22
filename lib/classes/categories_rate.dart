@@ -8,10 +8,11 @@ class Rate {
 
 class Category {
   String name;
-  bool isFlatRate;
+  bool hasFlatRate;
   List<Rate> rates;
 
-  Category({required this.name, required this.isFlatRate, required this.rates});
+  Category(
+      {required this.name, required this.hasFlatRate, required this.rates});
 }
 
 class ElectricitySettings {

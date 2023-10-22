@@ -18,7 +18,7 @@ class AddCategoryForm extends StatefulWidget {
 class AddCategoryFormState extends State<AddCategoryForm> {
   final _categoryNameKey = GlobalKey<FormFieldState>();
   final _rateFormKey = GlobalKey<FormState>();
-  bool _isFlatRate = false;
+  bool _hasFlatRate = false;
   var rateDivisions = <Rate>[];
 
   final startUnitController = TextEditingController();
@@ -67,10 +67,10 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                 child: SwitchListTile(
                     contentPadding: const EdgeInsets.only(left: 8.0, right: 0),
                     title: const Text('Flat rate'),
-                    value: _isFlatRate,
+                    value: _hasFlatRate,
                     onChanged: (bool value) {
                       setState(() {
-                        _isFlatRate = value;
+                        _hasFlatRate = value;
 
                         if (value == true) {
                           // set the units range for flat rate
@@ -89,7 +89,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                       });
                     }),
               ),
-              (!_isFlatRate || (_isFlatRate && rateDivisions.isEmpty))
+              (!_hasFlatRate || (_hasFlatRate && rateDivisions.isEmpty))
                   ? Container(
                       margin: const EdgeInsets.only(top: 8.0),
                       padding: const EdgeInsets.only(
@@ -105,7 +105,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                         child: Column(
                           children: [
                             Row(children: [
-                              if (!_isFlatRate)
+                              if (!_hasFlatRate)
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: startUnitFocusNode,
@@ -131,11 +131,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                     },
                                   ),
                                 ),
-                              if (!_isFlatRate)
+                              if (!_hasFlatRate)
                                 const SizedBox(
                                   width: 20.0,
                                 ),
-                              if (!_isFlatRate)
+                              if (!_hasFlatRate)
                                 Expanded(
                                   child: TextFormField(
                                     controller: endUnitController,
@@ -173,7 +173,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                     },
                                   ),
                                 ),
-                              if (!_isFlatRate)
+                              if (!_hasFlatRate)
                                 const SizedBox(
                                   width: 20.0,
                                 ),
@@ -287,7 +287,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                       } else {
                         final categoryToAdd = Category(
                             name: categoryNameInput,
-                            isFlatRate: _isFlatRate,
+                            hasFlatRate: _hasFlatRate,
                             rates: rateDivisions);
                         categoriesState.addCategory(
                             categoryToAdd, categoryNameInput);
