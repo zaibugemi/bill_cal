@@ -1,9 +1,8 @@
 class Rate {
-  int startUnits;
-  int endUnits;
+  int units;
   double rate;
 
-  Rate({required this.startUnits, required this.endUnits, required this.rate});
+  Rate({required this.units, required this.rate});
 }
 
 class Category {

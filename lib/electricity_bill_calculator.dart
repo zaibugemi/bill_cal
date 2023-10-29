@@ -43,10 +43,8 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
           if (unitsConsumed <= 0) {
             break;
           }
-          int unitsInCurrentRange = rate.endUnits - rate.startUnits + 1;
-          int unitsToConsider = unitsConsumed <= unitsInCurrentRange
-              ? unitsConsumed
-              : unitsInCurrentRange;
+          int unitsToConsider =
+              unitsConsumed <= rate.units ? unitsConsumed : rate.units;
           totalBill += unitsToConsider * rate.rate;
           unitsConsumed -= unitsToConsider;
         }

@@ -22,22 +22,24 @@ class AddCategoryFormState extends State<AddCategoryForm> {
   bool _hasFlatRate = false;
   var rateDivisions = <Rate>[];
 
-  final startUnitController = TextEditingController();
-  final endUnitController = TextEditingController();
+  final unitController = TextEditingController();
   final rateController = TextEditingController();
 
-  late FocusNode startUnitFocusNode;
+  late FocusNode unitFocusNode;
+  late FocusNode rateFocusNode;
 
   @override
   void initState() {
     super.initState();
 
-    startUnitFocusNode = FocusNode();
+    unitFocusNode = FocusNode();
+    rateFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
-    startUnitFocusNode.dispose();
+    unitFocusNode.dispose();
+    rateFocusNode.dispose();
 
     super.dispose();
   }
@@ -70,23 +72,17 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                     title: const Text('Flat rate'),
                     value: _hasFlatRate,
                     onChanged: (bool value) {
+                      _hasFlatRate = value;
                       setState(() {
-                        _hasFlatRate = value;
-
                         if (value == true) {
-                          // set the units range for flat rate
-                          startUnitController.text = '1';
-                          endUnitController.text = '$maxUnitsForFlatRate';
-                          if (rateDivisions.length > 1) {
-                            rateDivisions[0].startUnits = 1;
-                            rateDivisions[0].endUnits = maxUnitsForFlatRate;
-                            rateDivisions = [rateDivisions[0]];
-                          }
+                          unitController.text = '$maxUnitsForFlatRate';
+                          rateFocusNode.requestFocus();
                         } else {
-                          // reset the unit range
-                          startUnitController.text = '';
-                          endUnitController.text = '';
+                          unitController.text = '';
+                          unitFocusNode.requestFocus();
                         }
+                        rateController.text = '';
+                        rateDivisions = <Rate>[];
                       });
                     }),
               ),
@@ -109,11 +105,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                               if (!_hasFlatRate)
                                 Expanded(
                                   child: TextFormField(
-                                    focusNode: startUnitFocusNode,
-                                    controller: startUnitController,
+                                    focusNode: unitFocusNode,
+                                    controller: unitController,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                        labelText: 'units start'),
+                                        labelText: 'units'),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Invalid number';
@@ -128,48 +124,6 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                         return 'Invalid number';
                                       }
 
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              if (!_hasFlatRate)
-                                const SizedBox(
-                                  width: 20.0,
-                                ),
-                              if (!_hasFlatRate)
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: endUnitController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                        labelText: 'units end'),
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Invalid number';
-                                      }
-                                      int? parsedValue = int.tryParse(value);
-                                      if (parsedValue == null) {
-                                        return 'Invalid number';
-                                      }
-
-                                      if (parsedValue < 0) {
-                                        return 'Invalid number';
-                                      }
-
-                                      int? startUnitParsed = int.tryParse(
-                                          startUnitController.text);
-
-                                      if (startUnitParsed != null) {
-                                        if (startUnitParsed >= parsedValue) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                            duration: Duration(seconds: 6),
-                                            content: Text(
-                                                "'units end' should be greater than 'units start'"),
-                                          ));
-                                          return 'Invalid number';
-                                        }
-                                      }
                                       return null;
                                     },
                                   ),
@@ -179,28 +133,31 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                   width: 20.0,
                                 ),
                               Expanded(
-                                  child: TextFormField(
-                                controller: rateController,
-                                keyboardType: TextInputType.number,
-                                decoration:
-                                    const InputDecoration(labelText: 'rate'),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Invalid number';
-                                  }
+                                child: TextFormField(
+                                  focusNode: rateFocusNode,
+                                  controller: rateController,
+                                  keyboardType: TextInputType.number,
+                                  decoration:
+                                      const InputDecoration(labelText: 'rate'),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Invalid number';
+                                    }
 
-                                  double? parsedValue = double.tryParse(value);
-                                  if (parsedValue == null) {
-                                    return 'Invalid number';
-                                  }
+                                    double? parsedValue =
+                                        double.tryParse(value);
+                                    if (parsedValue == null) {
+                                      return 'Invalid number';
+                                    }
 
-                                  if (parsedValue < 0) {
-                                    return 'Invalid number';
-                                  }
+                                    if (parsedValue < 0) {
+                                      return 'Invalid number';
+                                    }
 
-                                  return null;
-                                },
-                              ))
+                                    return null;
+                                  },
+                                ),
+                              ),
                             ]),
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
@@ -212,19 +169,16 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                           .validate()) {
                                         setState(() {
                                           rateDivisions.add(Rate(
-                                              startUnits: int.parse(
-                                                  startUnitController.text),
-                                              endUnits: int.parse(
-                                                  endUnitController.text),
+                                              units: int.parse(
+                                                  unitController.text),
                                               rate: double.parse(
                                                   rateController.text)));
 
-                                          startUnitController.text = '';
-                                          endUnitController.text = '';
+                                          unitController.text = '';
                                           rateController.text = '';
                                         });
 
-                                        startUnitFocusNode.requestFocus();
+                                        unitFocusNode.requestFocus();
                                       }
                                     },
                                     icon: const Icon(
@@ -232,7 +186,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                     ),
                                     label: const Text('Add Rate'),
                                   )),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -261,8 +215,7 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                             ],
                             rows: rateDivisions.map((r) {
                               return DataRow(cells: <DataCell>[
-                                DataCell(
-                                    Text('${r.startUnits} - ${r.endUnits}')),
+                                DataCell(Text('${r.units}')),
                                 DataCell(Text('${r.rate}'))
                               ]);
                             }).toList(),
@@ -294,6 +247,8 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                         var db = DatabaseHelper();
                         await db.addCategory(categoryToAdd);
                         // var categories = await db.getCategories();
+
+                        // print("*** ${categories}");
 
                         categoriesState.addCategory(
                             categoryToAdd, categoryNameInput);

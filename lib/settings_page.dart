@@ -54,7 +54,7 @@ class SettingsPage extends StatelessWidget {
                     ],
                     rows: category.rates.map((r) {
                       return DataRow(cells: <DataCell>[
-                        DataCell(Text('${r.startUnits} - ${r.endUnits}')),
+                        DataCell(Text('${r.units}')),
                         DataCell(Text('${r.rate}'))
                       ]);
                     }).toList(),

@@ -51,7 +51,7 @@ class DatabaseHelper {
       for (var i = 0; i < c.rates.length; i++) {
         batch.insert('Rate', {
           'priority': i + 1,
-          'units': c.rates[i].endUnits - c.rates[i].startUnits + 1,
+          'units': c.rates[i].units,
           'rate': c.rates[i].rate,
           'fk_category_id': categoryId,
         });
