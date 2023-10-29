@@ -38,19 +38,21 @@ class SettingsPage extends StatelessWidget {
                   DataTable(
                     columns: const [
                       DataColumn(
-                          label: Expanded(
-                        child: Text(
-                          'Units',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                        label: Expanded(
+                          child: Text(
+                            'Units',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      )),
+                      ),
                       DataColumn(
-                          label: Expanded(
-                        child: Text(
-                          'Rate',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                        label: Expanded(
+                          child: Text(
+                            'Rate',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      ))
+                      ),
                     ],
                     rows: category.rates.map((r) {
                       return DataRow(cells: <DataCell>[
@@ -58,7 +60,7 @@ class SettingsPage extends StatelessWidget {
                         DataCell(Text('${r.rate}'))
                       ]);
                     }).toList(),
-                  )
+                  ),
                 ],
               );
             },
@@ -69,14 +71,15 @@ class SettingsPage extends StatelessWidget {
           color: Colors.white,
         ),
         ElevatedButton(
-            onPressed: () {
-              // Handle button press
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddCategoryForm()));
-            },
-            child: const Text('Add Category'))
+          onPressed: () {
+            // Handle button press
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddCategoryForm()));
+          },
+          child: const Text('Add Category'),
+        ),
       ],
     );
   }

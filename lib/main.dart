@@ -62,17 +62,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-          appBar: AppBar(title: const Text('Electricity Bill Calculator')),
-          body: Row(
-            children: [
-              SafeArea(
-                  child: NavigationRail(
+        appBar: AppBar(title: const Text('Electricity Bill Calculator')),
+        body: Row(
+          children: [
+            SafeArea(
+              child: NavigationRail(
                 extended: constraints.maxWidth >= 600,
                 destinations: const [
                   NavigationRailDestination(
-                      icon: Icon(Icons.calculate), label: Text('Calculate')),
+                    icon: Icon(Icons.calculate),
+                    label: Text('Calculate'),
+                  ),
                   NavigationRailDestination(
-                      icon: Icon(Icons.settings), label: Text('Settings'))
+                    icon: Icon(Icons.settings),
+                    label: Text('Settings'),
+                  ),
                 ],
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
@@ -80,15 +84,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     selectedIndex = value;
                   });
                 },
-              )),
-              Expanded(
-                  child: Container(
+              ),
+            ),
+            Expanded(
+              child: Container(
                 margin: const EdgeInsets.only(right: 10.0, bottom: 10.0),
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
-              ))
-            ],
-          ));
+              ),
+            ),
+          ],
+        ),
+      );
     });
   }
 }
