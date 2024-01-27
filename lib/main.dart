@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'categories_state.dart';
-import 'category_form.dart';
-import 'electricity_bill_calculator.dart';
-import 'settings_page.dart';
+import 'package:bill_cal/database/bill_db.dart';
+import 'classes/categories_state.dart';
+import 'add_category.dart';
+import 'calculator.dart';
+import 'categories_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +38,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
+  // late DatabaseHelper db;
+  int selectedIndex = 0;
+  bool _isInitialized = false;
+
+  loadCategories(context) async {
+    var db = DatabaseHelper();
+    var categoriesFromDB = await db.getCategories();
+    var categoriesState = Provider.of<CategoriesState>(context, listen: false);
+    categoriesState.loadCategories(categoriesFromDB);
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInitialized) {
+      loadCategories(context);
+      _isInitialized = true;
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

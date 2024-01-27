@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'categories_state.dart';
-import 'category_form.dart';
+import 'classes/categories_state.dart';
+import 'package:bill_cal/database/bill_db.dart';
+import 'add_category.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -34,6 +35,16 @@ class SettingsPage extends StatelessWidget {
                   electricityCategories.keys.elementAt(index)];
               return ExpansionTile(
                 title: Text(category!.name),
+                leading: IconButton(
+                  onPressed: () async {
+                    var db = DatabaseHelper();
+                    db.deleteCategory(category.name);
+                    categoriesState.deleteCategory(category.name);
+                    db.getRates();
+                  },
+                  icon: const Icon(Icons.delete),
+                  tooltip: 'Delete Category',
+                ),
                 children: <Widget>[
                   DataTable(
                     columns: const [

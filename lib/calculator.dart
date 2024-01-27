@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'categories_state.dart';
+import 'classes/categories_state.dart';
 import 'classes/categories_rate.dart';
 
 class ElectricityBillCalculator extends StatefulWidget {
@@ -47,6 +47,10 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
               unitsConsumed <= rate.units ? unitsConsumed : rate.units;
           totalBill += unitsToConsider * rate.rate;
           unitsConsumed -= unitsToConsider;
+        }
+
+        if (unitsConsumed > 0) {
+          totalBill += unitsConsumed * category.rates.last.rate;
         }
         return totalBill;
       }

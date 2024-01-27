@@ -2,7 +2,7 @@ import 'package:bill_cal/database/bill_db.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'categories_state.dart';
+import 'classes/categories_state.dart';
 import 'classes/categories_rate.dart';
 
 const maxUnitsForFlatRate = 99999;
@@ -65,6 +65,9 @@ class AddCategoryFormState extends State<AddCategoryForm> {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a valid name';
+                }
+                if (value.length > 20) {
+                  return 'Use less than 20 characters';
                 }
                 return null;
               },
@@ -282,8 +285,11 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                             0) {
                           Navigator.pop(context);
                         }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Category Added!')));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text('Category Added!'),
+                          duration: Duration(seconds: 1, milliseconds: 30),
+                        ));
                       }
                     }
                   }
