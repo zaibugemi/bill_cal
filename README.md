@@ -1,16 +1,14 @@
-# bill_cal
+# bill cal
 
-A new Flutter project.
+A Flutter project to help powerhouse staff with calculating electricity bills.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# To-Do
+- Support all CRUD operations for consumer categories.
+  - ~~Create Category~~
+  - ~~Read Category~~
+  - ~~Delete Category~~
+  - Update Category
+- Handle the remaining units case i.e. when adding a category, allow the option (or maybe it should be strictly required when the category does not have a flat rate) to add a final rate for all the remaining units that remain after all the rate bracket of the same category has been applied.
+- In the calculator, provide a clear all button that clears all the filled values (currently, these would be the 'last reading' and 'new reading' fields).
+  - By default, hold on to the values the user puts inside the 'last reading' and 'new reading' fields if they switch to another screen.
+ 
