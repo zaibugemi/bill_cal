@@ -1,8 +1,19 @@
 import 'package:bill_cal/classes/categories_rate.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:logger/logger.dart';
 
 class DatabaseHelper {
+  // TODO: extract logger logic maybe
+  final logger = Logger(
+      printer: PrettyPrinter(
+    methodCount: 0,
+    errorMethodCount: 3,
+    lineLength: 50,
+    colors: true,
+    printEmojis: true,
+    printTime: false,
+  ));
   DatabaseHelper._internal();
 
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -25,8 +36,8 @@ class DatabaseHelper {
   initDb() async {
     // the following line is for development purposes only
     // ****************************************************************
-    databaseFactory
-        .deleteDatabase(join(await getDatabasesPath(), 'bill_database.db'));
+    // databaseFactory
+    //     .deleteDatabase(join(await getDatabasesPath(), 'bill_database.db'));
     // ****************************************************************
     final billDb = await openDatabase(
       join(await getDatabasesPath(), 'bill_database.db'),
@@ -75,9 +86,44 @@ class DatabaseHelper {
     var dbClient = await db;
     var categories = await dbClient.rawQuery('''
       SELECT Category.name, Category.hasFlatRate, Rate.priority, Rate.units, Rate.rate
-      FROM Category
-      INNER JOIN Rate ON Category.id = Rate.fk_category_id
+        FROM Category
+      INNER JOIN Rate 
+        ON Category.id = Rate.fk_category_id
+      ORDER BY
+        Category.name ASC,
+        Rate.priority ASC;
     ''');
-    return categories;
+
+    // TODO: remove the following logs
+    logger.i('categories: $categories');
+    return toMap(categories);
+  }
+
+  getRates() async {
+    var dbClient = await db;
+    var rates = await dbClient.rawQuery('SELECT * FROM Rate');
+    logger.i('rates: $rates');
+  }
+
+  Map<String, Category> toMap(categories) {
+    Map<String, Category> initialValue = {};
+    var categoriesGroupedByName = categories.fold<Map<String, Category>>(
+      initialValue,
+      (previousValue, element) {
+        Map<String, Category> val = previousValue;
+        String categoryName = element['name'];
+        if (!val.containsKey(categoryName)) {
+          val[categoryName] = Category(
+              name: categoryName,
+              hasFlatRate: element['hasFlatRate'] == 1,
+              rates: <Rate>[]);
+        }
+        val[categoryName]!
+            .rates
+            .add(Rate(units: element['units'], rate: element['rate']));
+        return val;
+      },
+    );
+    return categoriesGroupedByName;
   }
 }
