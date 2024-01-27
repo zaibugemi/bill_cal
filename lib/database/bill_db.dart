@@ -18,6 +18,10 @@ class DatabaseHelper {
     return _db!;
   }
 
+  Future onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
+  }
+
   initDb() async {
     // the following line is for development purposes only
     // ****************************************************************
@@ -26,11 +30,12 @@ class DatabaseHelper {
     // ****************************************************************
     final billDb = await openDatabase(
       join(await getDatabasesPath(), 'bill_database.db'),
+      onConfigure: onConfigure,
       onCreate: (db, version) async {
         await db.execute(
             'CREATE TABLE Category(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, hasFlatRate INTEGER);');
         await db.execute(
-            'CREATE TABLE Rate(id INTEGER PRIMARY KEY AUTOINCREMENT, priority INTEGER, units INTEGER, rate double, fk_category_id, FOREIGN KEY (fk_category_id) REFERENCES Category (id));');
+            'CREATE TABLE Rate(id INTEGER PRIMARY KEY AUTOINCREMENT, priority INTEGER, units INTEGER, rate double, fk_category_id, FOREIGN KEY (fk_category_id) REFERENCES Category (id) ON DELETE CASCADE);');
       },
       version: 1,
     );
@@ -58,6 +63,12 @@ class DatabaseHelper {
       }
       await batch.commit(noResult: true);
     });
+  }
+
+  deleteCategory(String categoryName) async {
+    var dbClient = await db;
+    await dbClient.rawQuery(
+        'DELETE FROM Category WHERE Category.name = (?)', [categoryName]);
   }
 
   getCategories() async {
