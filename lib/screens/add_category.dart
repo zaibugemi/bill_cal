@@ -2,8 +2,8 @@ import 'package:bill_cal/database/bill_db.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'classes/categories_state.dart';
-import 'classes/categories_rate.dart';
+import '../classes/categories_state.dart';
+import '../classes/categories_rate.dart';
 
 const maxUnitsForFlatRate = 99999;
 

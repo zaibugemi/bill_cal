@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'classes/categories_state.dart';
+import '../classes/categories_state.dart';
 import 'package:bill_cal/database/bill_db.dart';
 import 'add_category.dart';
 
