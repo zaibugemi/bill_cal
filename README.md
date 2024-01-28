@@ -15,6 +15,7 @@ A Flutter project to help powerhouse staff with calculating electricity bills.
 - Add field validations for the calculator page as well.
   - New Reading should be greater than Last Reading.
 - Recalculate new bill value when another category is selected only when the calculate bill button has been clicked at least once.
+- If the calculate bill button has been clicked then update its look to indicate that, and update that look and feel whenever a category is changed.
 
 
 # Performance Improvements (though it might not matter at this stage)
