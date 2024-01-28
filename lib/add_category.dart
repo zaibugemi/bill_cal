@@ -130,16 +130,13 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Invalid number';
+                                        return 'Invalid value';
                                       }
 
                                       int? parsedValue = int.tryParse(value);
-                                      if (parsedValue == null) {
-                                        return 'Invalid number';
-                                      }
-
-                                      if (parsedValue < 0) {
-                                        return 'Invalid number';
+                                      if (parsedValue == null ||
+                                          parsedValue < 0) {
+                                        return 'Invalid value';
                                       }
 
                                       return null;
@@ -160,17 +157,14 @@ class AddCategoryFormState extends State<AddCategoryForm> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Invalid number';
+                                      return 'Invalid value';
                                     }
 
                                     double? parsedValue =
                                         double.tryParse(value);
-                                    if (parsedValue == null) {
-                                      return 'Invalid number';
-                                    }
-
-                                    if (parsedValue < 0) {
-                                      return 'Invalid number';
+                                    if (parsedValue == null ||
+                                        parsedValue < 0) {
+                                      return 'Invalid value';
                                     }
 
                                     return null;
@@ -270,9 +264,6 @@ class AddCategoryFormState extends State<AddCategoryForm> {
 
                       var db = DatabaseHelper();
                       await db.addCategory(categoryToAdd);
-                      // var categories = await db.getCategories();
-
-                      // print("*** ${categories}");
 
                       categoriesState.addCategory(
                           categoryToAdd, categoryNameInput);
