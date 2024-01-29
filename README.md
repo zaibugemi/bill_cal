@@ -17,6 +17,7 @@ A Flutter project to help powerhouse staff with calculating electricity bills.
 - Recalculate new bill value when another category is selected only when the calculate bill button has been clicked at least once.
 - If the calculate bill button has been clicked then update its look to indicate that, and update that look and feel whenever a category is changed.
 - add error handling (try catch?)
+- in future, consider using feature/dev branches instead of directly using the main branch.
 
 
 # Performance Improvements (though it might not matter at this stage)
