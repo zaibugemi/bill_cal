@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bill_cal/database/bill_db.dart';
 import 'classes/categories_state.dart';
-import 'add_category.dart';
-import 'calculator.dart';
-import 'categories_list.dart';
+import 'screens/add_category.dart';
+import 'screens/calculator.dart';
+import 'screens/categories_list.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
