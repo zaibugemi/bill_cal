@@ -15,11 +15,21 @@ class ElectricityBillCalculator extends StatefulWidget {
 
 class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
   double billAmount = 0;
+  bool isCalculationDone = false;
+  bool isCalculateButtonClickedOnce = false;
 
   final lastReadingController = TextEditingController();
   final newReadingController = TextEditingController();
   final categoryController = TextEditingController();
   final _calculatorFormKey = GlobalKey<FormState>();
+
+  void resetCalculation() {
+    if (isCalculateButtonClickedOnce) {
+      setState(() {
+        isCalculationDone = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +93,7 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
 
                   return null;
                 },
+                onChanged: (value) => resetCalculation(),
               ),
               TextFormField(
                 controller: newReadingController,
@@ -110,6 +121,7 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
 
                   return null;
                 },
+                onChanged: (value) => resetCalculation(),
               ),
               DropdownButton<String>(
                 value: categoryController.text,
@@ -117,6 +129,7 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
                   setState(() {
                     categoryController.text = newValue!;
                   });
+                  resetCalculation();
                 },
                 items: electricitySettings.categories.keys
                     .map<DropdownMenuItem<String>>((String value) {
@@ -139,11 +152,27 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
                 height: 10,
               ),
               ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: isCalculationDone
+                        ? MaterialStatePropertyAll(
+                            Theme.of(context).colorScheme.secondaryContainer)
+                        : const MaterialStatePropertyAll(Colors.white),
+                    foregroundColor: isCalculationDone
+                        ? MaterialStatePropertyAll(
+                            Theme.of(context).colorScheme.secondary)
+                        : MaterialStatePropertyAll(
+                            Theme.of(context).colorScheme.primary)),
                 onPressed: () {
                   if (_calculatorFormKey.currentState!.validate()) {
                     setState(() {
                       billAmount = calculateBill();
+                      isCalculationDone = true;
                     });
+                    if (!isCalculateButtonClickedOnce) {
+                      setState(() {
+                        isCalculateButtonClickedOnce = true;
+                      });
+                    }
                   }
                 },
                 child: const Text('Calculate Bill'),
