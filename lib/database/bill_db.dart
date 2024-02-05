@@ -82,7 +82,7 @@ class DatabaseHelper {
         'DELETE FROM Category WHERE Category.name = (?)', [categoryName]);
   }
 
-  getCategories() async {
+  Future<Map<String, Category>> getCategories() async {
     var dbClient = await db;
     var categories = await dbClient.rawQuery('''
       SELECT Category.name, Category.hasFlatRate, Rate.priority, Rate.units, Rate.rate

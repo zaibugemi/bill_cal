@@ -1,3 +1,4 @@
+import 'package:bill_cal/classes/categories_rate.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bill_cal/database/bill_db.dart';
@@ -7,27 +8,60 @@ import 'screens/calculator.dart';
 import 'screens/categories_list.dart';
 import 'screens/splash_screen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const BillCalculatorApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BillCalculatorApp extends StatelessWidget {
+  const BillCalculatorApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CategoriesState(),
-      child: MaterialApp(
-        title: 'Electricity Bill Calculator',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: const MyHomePage(),
-      ),
-    );
+    return const AppWithDB();
+  }
+}
+
+class AppWithDB extends StatefulWidget {
+  const AppWithDB({super.key});
+
+  @override
+  State<AppWithDB> createState() => _AppWithDBState();
+}
+
+Future<Map<String, Category>> fetchCategoriesFromDB() async {
+  var db = DatabaseHelper();
+  return db.getCategories();
+}
+
+class _AppWithDBState extends State<AppWithDB> {
+  final Future<Map<String, Category>> _categoriesFromDB =
+      fetchCategoriesFromDB();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: _categoriesFromDB,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return ChangeNotifierProvider(
+              create: (context) => CategoriesState(snapshot.data!),
+              child: MaterialApp(
+                title: 'Electricity Bill Calculator',
+                theme: ThemeData(
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                  useMaterial3: true,
+                ),
+                home: const MyHomePage(),
+              ),
+            );
+          } else {
+            return const MaterialApp(
+              title: 'Electricity Bill Calculator',
+              home: SplashScreen(),
+            );
+          }
+        });
   }
 }
 
@@ -39,25 +73,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // late DatabaseHelper db;
   int selectedIndex = 0;
-  bool _isInitialized = false;
-
-  loadCategories(context) async {
-    var db = DatabaseHelper();
-    var categoriesFromDB = await db.getCategories();
-    var categoriesState = Provider.of<CategoriesState>(context, listen: false);
-    categoriesState.loadCategories(categoriesFromDB);
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (!_isInitialized) {
-      loadCategories(context);
-      _isInitialized = true;
-    }
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
