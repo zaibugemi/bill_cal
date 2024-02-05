@@ -20,7 +20,6 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
   final newReadingController = TextEditingController();
   final categoryController = TextEditingController();
   final _calculatorFormKey = GlobalKey<FormState>();
-  bool calculateButtonHasBeenClickedAtLeastOnce = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,9 +116,6 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
                 onChanged: (String? newValue) {
                   setState(() {
                     categoryController.text = newValue!;
-                    if (calculateButtonHasBeenClickedAtLeastOnce) {
-                      billAmount = calculateBill();
-                    }
                   });
                 },
                 items: electricitySettings.categories.keys
@@ -147,9 +143,6 @@ class _ElectricityBillCalculatorState extends State<ElectricityBillCalculator> {
                   if (_calculatorFormKey.currentState!.validate()) {
                     setState(() {
                       billAmount = calculateBill();
-                      if (!calculateButtonHasBeenClickedAtLeastOnce) {
-                        calculateButtonHasBeenClickedAtLeastOnce = true;
-                      }
                     });
                   }
                 },
