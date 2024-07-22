@@ -2,22 +2,29 @@
 
 A Flutter project to help powerhouse staff with calculating electricity bills.
 
-# To-Do
-- Support all CRUD operations for consumer categories.
-  - ~~Create Category~~
-  - ~~Read Category~~
-  - ~~Delete Category~~
-  - Update Category
-- Handle the remaining units case i.e. when adding a category, allow the option (or maybe it should be strictly required when the category does not have a flat rate) to add a final rate for all the remaining units that remain after all the rate brackets of the same category has been applied.
-  - this is for now handled by using the latest rate to apply to the remaining units.
-- In the calculator, provide a 'clear all' button that clears all the filled values (currently, these would be the 'last reading' and 'new reading' fields).
-  - By default, hold on to the values the user puts inside the 'last reading' and 'new reading' fields if they switch to another screen.
-- Add field validations for the calculator page as well.
-  - New Reading should be greater than Last Reading.
-- Recalculate new bill value when another category is selected only when the calculate bill button has been clicked at least once.
-- If the calculate bill button has been clicked then update its look to indicate that, and update that look and feel whenever a category is changed.
-- add error handling (try catch?)
-- in future, consider using feature/dev branches instead of directly using the main branch.
+#Demo
+## Add Category
+Add a category with different unit ranges and rates.
+![](demo/save%20category.gif)
 
+## Add Category With a Flat Rate
+Add a category with a flat rate.
+![](demo/flat%20rate.gif)
 
-# Performance Improvements (though it might not matter at this stage)
+## Categories Details
+Check the details of different categories.
+![](demo/scroll%20category%20detail.gif)
+
+## Calculate Bill
+Calculate the electricity bill by choosing the relevant category.
+![](demo/calculate.gif)
+
+## Delete a Category
+You can delete a category.
+![](demo/delete%20category.gif)
+
+There are more features to be added to the app like:
+* Editing a category
+* Units and charges breakdown for a given bill
+* Consumer history
+
