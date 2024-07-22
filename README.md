@@ -5,7 +5,7 @@ A Flutter project to help powerhouse staff with calculating electricity bills.
 #Demo
 ## Add Category
 Add a category with different unit ranges and rates.
-![](demo/save%20category.gif)
+<img src="https://raw.githubusercontent.com/zaibugemi/bill_cal/master/demo/calculate.gif" alt="Description of GIF" width="360" height="800">
 
 ## Add Category With a Flat Rate
 Add a category with a flat rate.
